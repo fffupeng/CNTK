@@ -2,6 +2,41 @@
 
 ## Latest news
 
+***2018-01-31.* CNTK 2.4**
+
+Highlights:
+* Moved to CUDA9, cuDNN 7 and Visual Studio 2017.
+* Removed Python 3.4 support.
+* Added Volta GPU and FP16 support.
+* Better ONNX support.
+* CPU perf improvement.
+* More OPs.
+
+OPs
+* ``top_k`` operation: in the forward pass it computes the top (largest) k values and corresponding indices along the specified axis. In the backward pass the gradient is scattered to the top k elements (an element not in the top k gets a zero gradient).
+* ``gather`` operation now supports an axis argument
+* ``squeeze`` and ``expand_dims`` operations for easily removing and adding singleton axes
+* ``zeros_like`` and ``ones_like`` operations. In many situations you can just rely on CNTK correctly broadcasting a simple 0 or 1 but sometimes you need the actual tensor.
+* ``depth_to_space``: Rearranges elements in the input tensor from the depth dimension into spatial blocks. Typical use of this operation is for implementing sub-pixel convolution for some image super-resolution models.
+* ``space_to_depth``: Rearranges elements in the input tensor from the spatial dimensions to the depth dimension. It is largely the inverse of DepthToSpace.
+
+ONNX
+* There have been several improvements to ONNX support in CNTK.
+* Updates
+  * Updated ONNX ``Reshape`` op to handle ``InferredDimension``.
+  * Adding ``producer_name`` and ``producer_version`` fields to ONNX models.
+  * Handling the case when neither ``auto_pad`` nor ``pads`` atrribute is specified in ONNX ``Conv`` op.
+* Bug fixes
+  * Fixed bug in ONNX ``Pooling`` op serialization
+  * Bug fix to create ONNX ``InputVariable`` with only one batch axis.
+  * Bug fixes and updates to implementation of ONNX ``Transpose`` op to match updated spec.
+  * Bug fixes and updates to implementation of ONNX ``Conv``, ``ConvTranspose``, and ``Pooling`` ops to match updated spec.
+
+Operators
+* Group convolution
+  * Fixed bug in group convolution. Output of CNTK ``Convolution`` op will change for groups > 1. More optimized implementation of group convolution is expected in the next release.
+  * Better error reporting for group convolution in ``Convolution`` layer.
+
 ***2018-01-22.*** CNTK support for CUDA 9
 
 CNTK now supports CUDA 9/cuDNN 7. This requires an update to build environment to Ubuntu 16/GCC 5 for Linux, and Visual Studio 2017/VCTools 14.11 for Windows. With CUDA 9, CNTK also added a preview for 16-bit floating point (a.k.a FP16) computation.
@@ -157,21 +192,6 @@ Linux GPU:
 * Python 3.5: https://cntk.ai/PythonWheel/GPU/cntk-2.3-Pre-cp35-cp35m-linux_x86_64.whl
 * Python 3.6: https://cntk.ai/PythonWheel/GPU/cntk-2.3-Pre-cp36-cp36m-linux_x86_64.whl
 
-
-***2017-09-25.*** CNTK September interation plan posted [here](https://github.com/Microsoft/CNTK/issues/2410).
-
-***2017-09-24.*** CNTK R-binding now available [here](https://github.com/Microsoft/CNTK-R).
-
-***2017-09-15.* CNTK 2.2**  
-Release of Cognitive Toolkit v2.2.
-
-Hightlights:
-* NCCL 2 support
-* New learner interface
-* A C#/.NET API that enables people to build and train networks
-* New C++ and C# eval examples
-* New nodes
-* Tensorboard image support for CNTK
 
 See more in the [Release Notes](https://docs.microsoft.com/en-us/cognitive-toolkit/ReleaseNotes/CNTK_2_2_Release_Notes).  
 Get the Release from the [CNTK Releases page](https://github.com/Microsoft/CNTK/releases).
